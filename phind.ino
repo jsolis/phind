@@ -1,22 +1,46 @@
-int led = D7;
+int ledPin = D7;
+int buttonPin = D0;
+
+boolean holding = false;
+int buttonState;
 
 void setup() {
-    pinMode(led, OUTPUT);
+    pinMode(ledPin, OUTPUT);
 
-    bool success = Particle.publish("phind");
-    if (success) {
-        // ON
-        digitalWrite(led, HIGH);
-        RGB.control(true);
-        RGB.color(255, 100, 100);
+    pinMode(buttonPin, INPUT);
 
-        // OFF
-        delay(1000);
-        digitalWrite(led, LOW);
-        RGB.control(false);
-    }
+    Serial.begin(9600);
 }
 
 void loop() {
+
+  buttonState = digitalRead(buttonPin);
+
+  if (buttonState == LOW && !holding)  {
+    holding = true;
+    digitalWrite(ledPin, HIGH);
+    Serial.println("Button pressed");
+
+  } else if (buttonState == HIGH && holding) {
+    holding = false;
+    digitalWrite(ledPin, LOW);
+
+    bool success = Particle.publish("phind");
+    Serial.println("Event published");
+
+    if (success) {
+      Serial.println("Rainbows");
+
+      RGB.control(true);
+      for (int i=0; i < 100; i++) {
+        RGB.color(255, 200, i);
+        delay(50);
+      }
+
+      delay(750);
+      RGB.control(false);
+    }
+
+  }
 
 }
