@@ -1,15 +1,19 @@
 int ledPin = D7;
 int buttonPin = D0;
+int power = A0;
 
 boolean holding = false;
 int buttonState;
 
 void setup() {
-    pinMode(ledPin, OUTPUT);
+  pinMode(power, OUTPUT);
+  digitalWrite(power, HIGH);
 
-    pinMode(buttonPin, INPUT);
+  pinMode(ledPin, OUTPUT);
 
-    Serial.begin(9600);
+  pinMode(buttonPin, INPUT);
+
+  Serial.begin(9600);
 }
 
 void loop() {
