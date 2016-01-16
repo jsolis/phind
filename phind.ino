@@ -36,8 +36,11 @@ void loop() {
       Serial.println("Rainbows");
 
       RGB.control(true);
-      for (int i=0; i < 100; i++) {
-        RGB.color(255, 200, i);
+      for (int i=0; i < 50; i++) {
+        int randR = random(256);
+        int randG = random(256);
+        int randB = random(256);
+        RGB.color(randR, randG, randB);
         delay(50);
       }
 
